@@ -44,7 +44,7 @@ class GetBmExchangeRates():
 class GetRncbExchangeRates():
     rncb_currency_page = bs(rncb_req, 'lxml')
     raw_currency_list = rncb_currency_page.findChild('table', {'class': 'cours'}).find_all('td')
-    currency_list = re.findall(r"\d{2}.\d{1,2}", str(raw_currency_list))
+    currency_list = re.findall(r"(\d{2}.\d{1,2})", str(raw_currency_list))
 
     rncb_exchange_rates = {
         'rncb_dollar_purchase_rate' : currency_list[0],
@@ -66,8 +66,8 @@ def where_to_buy_currency():
 def where_to_sell_currency():
     pass    
 
+may_1 = GetRncbExchangeRates()
+may_1.display()
 
-if __name__ == '__main__':
-    pass
     
     
