@@ -25,26 +25,26 @@ finally:
     os.chdir(folder)
 
 
-def get_bm_exchange_rates():
+class GetBmExchangeRates():
     bm_currency_page = bs(bm_req, 'lxml')
     raw_currency_list = bm_currency_page.findChild('table', {'class': 'little'}).find_all('td')
     currency_list = re.findall(r"\d+,\d+", str(raw_currency_list))
 
     bm_exchange_rates = {
-        'bm_dollar_purchase_rate' : currency_list[0],
-        'bm_dollar_selling_rate' : currency_list[1],
-        'bm_euro_purchase_rate' : currency_list[2],
-        'bm_euro_selling_rate' : currency_list[3]
+        'bm_dollar_purchase_rate' : float(currency_list[0].replace(',', '.')),
+        'bm_dollar_selling_rate' : float(currency_list[1].replace(',', '.')),
+        'bm_euro_purchase_rate' : float(currency_list[2].replace(',', '.')),
+        'bm_euro_selling_rate' : float(currency_list[3].replace(',', '.'))
         }
 
     with open('mb_exchange.txt', 'w') as file:
         file.write(str(bm_exchange_rates))
-    return bm_exchange_rates
 
-def get_rncb_exchange_rates():
+
+class GetRncbExchangeRates():
     rncb_currency_page = bs(rncb_req, 'lxml')
     raw_currency_list = rncb_currency_page.findChild('table', {'class': 'cours'}).find_all('td')
-    currency_list = re.findall(r"\d+.\d?", str(raw_currency_list))
+    currency_list = re.findall(r"\d{2}.\d{1,2}", str(raw_currency_list))
 
     rncb_exchange_rates = {
         'rncb_dollar_purchase_rate' : currency_list[0],
@@ -52,10 +52,11 @@ def get_rncb_exchange_rates():
         'rncb_euro_purchase_rate' : currency_list[2],
         'rncb_euro_selling_rate' : currency_list[3]
         }
-
+    def display(self, info=rncb_exchange_rates):
+        print(info)
+    
     with open('rncb_exchange.txt', 'w') as file:
         file.write(str(rncb_exchange_rates))
-    return rncb_exchange_rates
 
 
 def where_to_buy_currency():
