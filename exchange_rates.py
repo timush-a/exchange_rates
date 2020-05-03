@@ -40,7 +40,7 @@ class BmExchangeRates():
         }
 
     with open(f'bm_rates_{exact_time()}.txt', 'w') as file:
-        file.write(str(bm_exchange_rates))
+        file.write(str(bm_rates))
 
 
 class RncbExchangeRates():
@@ -53,38 +53,37 @@ class RncbExchangeRates():
         'dollars_selling': float(currency_list[1]),
         }
 
-    def display(self, info=rncb_exchange_rates):
+    def display(self, info=rncb_rates):
         print(info)
 
     with open(f'rncb_rates_{exact_time()}.txt', 'w') as file:
-        file.write(str(rncb_exchange_rates))
+        file.write(str(rncb_rates))
 
 
 def where_to_sell_dollars():
 
-    BmExchangeRates()
-    RncbExchangeRates()
+    bm_rates = BmExchangeRates().bm_rates
+    rncb_rates = RncbExchangeRates().rncb_rates
 
-    if rncb_rates[dollars_purchase] >= bm_rates[dollars_purchase]:
-        difference = rncb_rates[dollars_purchase] - bm_rates[dollars_purchase]
-        print('You should sell dollars in RNCB\n')
-        print(f'Difference of rates is equal {difference})
+    if rncb_rates['dollars_purchase'] >= bm_rates['dollars_purchase']:
+        difference = rncb_rates['dollars_purchase'] - bm_rates['dollars_purchase']
+        print('You should to sell dollars in RNCB')
+        print(f'Difference of rates is equal {difference}')
     else:
-        difference = bm_rates[dollars_purchase] - rncb_rates[dollars_purchase]
-        print('You should sell dollars in Sea Bank\n')
-        print(f'Difference of rates is equal {differnce_of_rates})
+        difference = bm_rates['dollars_purchase'] - rncb_rates['dollars_purchase']
+        print('You should to sell dollars in Sea Bank')
+        print(f'Difference of rates is equal {difference}')
 
 
 def where_to_buy_dollars():
-    BmExchangeRates()
-    RncbExchangeRates()
 
-    if rncb_exchange_rates[1] >= bm_exchange_rates[1]:
-        difference_of_rates = rncb_exchange_rates[0] - bm_exchange_rates[0]
-        print('You should sell dollars in RNCB\n')
-        print(f'Difference of rates is equal {differnce_of_rates})
+    bm_rates = BmExchangeRates().bm_rates
+    rncb_rates = RncbExchangeRates().rncb_rates
+    if rncb_rates['dollars_selling'] >= bm_rates['dollars_selling']:
+        difference = rncb_rates['dollars_selling'] - bm_rates['dollars_selling']
+        print('You should to buy dollars in RNCB')
+        print(f'Difference of rates is equal {difference}')
     else:
-        difference_of_rates = bm_exchange_rates[0] - rncb_exchange_rates[0]
-        print('You should sell dollars in Sea Bank\n')
-        print(f'Difference of rates is equal {differnce_of_rates})
-
+        difference = bm_rates['dollars_selling'] - rncb_rates['dollars_selling']
+        print('You should to buy dollars in Sea Bank')
+        print(f'Difference of rates is equal {difference}')
